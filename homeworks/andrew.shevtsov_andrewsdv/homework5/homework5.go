@@ -3,69 +3,13 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"github.com/MastersAcademy/go-course-2017/homeworks/andrew.shevtsov_andrewsdv/homework5/figure"
+	"time"
 )
 
 var boxSize int
-var box [][]Figure
-var figures = []Figure{Cube{}, Pyramid{}, Cone{}}
-
-type Figure interface {
-	Name() string
-	Weight() int
-}
-
-/* Cube */
-
-type Cube struct {
-}
-
-func (cube Cube) Name() string {
-	return "Cube   "
-}
-
-func (cube Cube) Weight() int {
-	return 3
-}
-
-func (cube Cube) String() string {
-	return fmt.Sprintf("[%v %v kg] ", cube.Name(), cube.Weight())
-}
-
-/* Pyramid */
-
-type Pyramid struct {
-}
-
-func (pyramid Pyramid) Name() string {
-	return "Pyramid"
-}
-
-func (pyramid Pyramid) Weight() int {
-	return 6
-}
-
-func (pyramid Pyramid) String() string {
-	return fmt.Sprintf("[%v %v kg] ", pyramid.Name(), pyramid.Weight())
-}
-
-/* Cone */
-
-type Cone struct {
-}
-
-func (cone Cone) Name() string {
-	return "Cone   "
-}
-
-func (cone Cone) Weight() int {
-	return 9
-}
-
-func (cone Cone) String() string {
-	return fmt.Sprintf("[%v %v kg] ", cone.Name(), cone.Weight())
-}
-
-/* Main */
+var box [][]figure.Figure
+var figures = []figure.Figure{figure.Cube{}, figure.Pyramid{}, figure.Cone{}}
 
 func main() {
 	askBoxSize()
@@ -82,9 +26,9 @@ func askBoxSize() {
 }
 
 func createBox() {
-	box = make([][]Figure, boxSize)
+	box = make([][]figure.Figure, boxSize)
 	for i := range box {
-		box[i] = make([]Figure, boxSize)
+		box[i] = make([]figure.Figure, boxSize)
 	}
 }
 
@@ -106,7 +50,10 @@ func printBox() {
 	}
 }
 
-func getRandomFigure() Figure {
-	randomIndex := rand.Intn(cap(figures))
+func getRandomFigure() figure.Figure {
+	source := rand.NewSource(time.Now().UnixNano())
+	randomizer := rand.New(source)
+
+	randomIndex := randomizer.Intn(cap(figures))
 	return figures[randomIndex]
 }
