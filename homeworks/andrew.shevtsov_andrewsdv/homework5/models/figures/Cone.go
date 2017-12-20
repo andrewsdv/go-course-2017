@@ -1,4 +1,4 @@
-package figure
+package figures
 
 import "fmt"
 

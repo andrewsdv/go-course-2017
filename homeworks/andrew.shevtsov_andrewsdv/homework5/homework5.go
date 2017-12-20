@@ -3,27 +3,16 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"github.com/MastersAcademy/go-course-2017/homeworks/andrew.shevtsov_andrewsdv/homework5/figure"
+	"github.com/MastersAcademy/go-course-2017/homeworks/andrew.shevtsov_andrewsdv/homework5/models"
 	"time"
 	"sort"
+	"github.com/MastersAcademy/go-course-2017/homeworks/andrew.shevtsov_andrewsdv/homework5/models/figures"
 )
-
-type SortableRow []figure.Figure
-
-func (it SortableRow) Len() int {
-		return len(it)
-	}
-func (it SortableRow) Swap(i, j int) {
-		it[i], it[j] = it[j], it[i]
-	}
-func (it SortableRow) Less(i, j int) bool {
-		return (it[i]).Weight() > (it[j]).Weight()
-	}
 
 var boxSize int
 var shakenCorner int
-var box [][]figure.Figure
-var figures = []figure.Figure{figure.Cube{}, figure.Pyramid{}, figure.Cone{}}
+var box [][]models.Figure
+var objects = []models.Figure{figures.Cube{}, figures.Pyramid{}, figures.Cone{}}
 
 func main() {
 	askBoxSize()
@@ -43,9 +32,9 @@ func askBoxSize() {
 }
 
 func createBox() {
-	box = make([][]figure.Figure, boxSize)
+	box = make([][]models.Figure, boxSize)
 	for i := range box {
-		box[i] = make([]figure.Figure, boxSize)
+		box[i] = make([]models.Figure, boxSize)
 	}
 }
 
@@ -67,12 +56,12 @@ func printBox() {
 	}
 }
 
-func getRandomFigure() figure.Figure {
+func getRandomFigure() models.Figure {
 	source := rand.NewSource(time.Now().UnixNano())
 	randomizer := rand.New(source)
 
-	randomIndex := randomizer.Intn(cap(figures))
-	return figures[randomIndex]
+	randomIndex := randomizer.Intn(cap(objects))
+	return objects[randomIndex]
 }
 
 func askShakenCorner() {
@@ -88,7 +77,7 @@ func askShakenCorner() {
 }
 
 func sortBox(shakenCorner int) {
-	sortableRow := make(SortableRow, boxSize)
+	sortableRow := make(models.SortableRow, boxSize)
 	for width := 0; width < boxSize; width = width + 1 {
 		for height := 0; height < boxSize; height = height + 1 {
 			sortableRow[height] = box[width][height]
@@ -104,7 +93,7 @@ func sortBox(shakenCorner int) {
 		}
 	}
 }
-func reverseSlice(sortableRow SortableRow) {
+func reverseSlice(sortableRow models.SortableRow) {
 	for i := len(sortableRow)/2 - 1; i >= 0; i-- {
 		opp := len(sortableRow) - 1 - i
 		sortableRow[i], sortableRow[opp] = sortableRow[opp], sortableRow[i]

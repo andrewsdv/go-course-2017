@@ -1,4 +1,4 @@
-package figure
+package models
 
 type Figure interface {
 	Name() string
