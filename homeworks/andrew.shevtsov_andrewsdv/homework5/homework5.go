@@ -11,7 +11,7 @@ import (
 
 var boxSize int
 var shakenCorner int
-var box [][]models.Figure
+var box []models.SortableRow
 var objects = []models.Figure{figures.Cube{}, figures.Pyramid{}, figures.Cone{}}
 
 func main() {
@@ -32,7 +32,7 @@ func askBoxSize() {
 }
 
 func createBox() {
-	box = make([][]models.Figure, boxSize)
+	box = make([]models.SortableRow, boxSize)
 	for i := range box {
 		box[i] = make([]models.Figure, boxSize)
 	}
@@ -78,21 +78,16 @@ func askShakenCorner() {
 
 func sortBox(shakenCorner int) {
 	sortableRow := make(models.SortableRow, boxSize)
-	for width := 0; width < boxSize; width = width + 1 {
-		for height := 0; height < boxSize; height = height + 1 {
-			sortableRow[height] = box[width][height]
-		}
-		sort.Sort(sortableRow)
+	for height := 0; height < boxSize; height = height + 1 {
+		row := box[height]
+		sort.Sort(row)
 
 		if shakenCorner == 2 || shakenCorner == 4 {
 			reverseSlice(sortableRow)
 		}
-
-		for height := 0; height < boxSize; height = height + 1 {
-			box[width][height] = sortableRow[height]
-		}
 	}
 }
+
 func reverseSlice(sortableRow models.SortableRow) {
 	for i := len(sortableRow)/2 - 1; i >= 0; i-- {
 		opp := len(sortableRow) - 1 - i
