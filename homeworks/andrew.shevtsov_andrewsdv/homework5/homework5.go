@@ -77,13 +77,37 @@ func askShakenCorner() {
 }
 
 func sortBox(shakenCorner int) {
+	sortHorizontally(shakenCorner)
+	sortVertically(shakenCorner)
+}
+
+func sortHorizontally(shakenCorner int) {
 	sortableRow := make(models.SortableRow, boxSize)
 	for height := 0; height < boxSize; height = height + 1 {
-		row := box[height]
-		sort.Sort(row)
+		sortableRow = box[height]
+		sort.Sort(sortableRow)
 
 		if shakenCorner == 2 || shakenCorner == 4 {
 			reverseSlice(sortableRow)
+		}
+	}
+}
+
+func sortVertically(shakenCorner int) {
+	for height := 0; height < boxSize; height = height + 1 {
+		sortableColumn := make(models.SortableRow, boxSize)
+		for width := 0; width < boxSize; width = width + 1 {
+			sortableColumn[width] = box[width][height]
+		}
+
+		sort.Sort(sortableColumn)
+
+		if shakenCorner == 3 || shakenCorner == 4 {
+			reverseSlice(sortableColumn)
+		}
+
+		for row := 0; row < boxSize; row = row + 1 {
+			box[row][height] = sortableColumn[row]
 		}
 	}
 }
